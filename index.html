@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<head>
+
+<meta charset="utf-8">
+<title>Arduino Yun • Home</title>
+
+<!-- <link rel="stylesheet" type="text/css" href="s.css"> -->
+
+<script type="text/javascript" src="zepto.min.js"></script>
+
+<style type="text/css">
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  margin: 2em;
+  background: #000000;
+}
+body {
+  height: 100%;
+  margin: 20px;    
+}
+h2 {
+ color:white
+}
+p {
+  color:white;
+}
+label{
+  color:white;
+}
+.section {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.switch {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+input {
+  display: block;
+  opacity: 0;  
+}
+.switch-control {
+  width: 70px;  
+  height: 30px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  background: rgb(189, 189, 189);
+  border-radius: 50px;
+  transition: background-color 0.4s;
+  -moz-transition: background-color 0.4s;
+  -webkit-transition: background-color 0.4s;
+  margin-bottom: 10px;
+}
+.switch-control:after {
+  left: 0;
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  content: '';
+  position: absolute;
+  background: #f0f0f0;
+  border-radius: 81px;
+}
+input:checked + .switch-control {
+  background: green;
+}
+input:checked + .switch-control:after {
+  left: auto;
+  right: 0;
+}
+</style>
+
+</head>
+
+<body>
+  <div class="section" id="sensor-data">
+    <h2>Weather Data</h2>
+    <p>Temperature: <span id="temperature">22°C</span></p>
+    <p>Humidity: <span id="humidity">60%</span></p>
+  </div>
+  <div class="section" id="switches">    	
+    <h2>Controls</h2>
+    <div class="switch" >
+      <label for="switch1">Audio:</label>
+      <input type="checkbox" id="switch1" />
+      <label class="switch-control" for="switch1"></label>
+      <script type="text/javascript">
+
+        $(document).ready(function() {
+  
+          $('#switch1').click(function() {                
+            if ($(this).is(':checked')) {
+              //ON
+              relayOn();
+            } else {
+              //OFF
+              relayOff();
+            }
+          });
+        });
+  
+        function relayOn() {      
+          //send 1 to arduino
+          $.get('/arduino/relay/1', function() {});
+        }
+  
+        function relayOff() {      
+          //send 0 to arduino
+          $.get('/arduino/relay/0', function() {});
+        }
+      </script>
+    </div>
+    
+  </div>
+</body>
