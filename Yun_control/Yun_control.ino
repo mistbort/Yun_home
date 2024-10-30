@@ -1,6 +1,7 @@
 /*
  to visit the html page, go in your browser and type:
- http://arduinoyun.local/sd/switch
+ http://arduinoyun.local/sd/Yun_control
+
 
  */
 #include <Wire.h>
@@ -43,12 +44,46 @@ void readClients(){
 
   // There is a new client?
   if (client) {
-
     String command = client.readStringUntil('/');
+    Serial.print(command);
+    if (command == "data"){  
+      Serial.println("responding data");
+
+      readDHT();
+      //init JSON data
+      client.println("Status:200");
+      client.println("content-type:application/json");
+      client.println();
+      client.println("{");
+      //timedata
+      client.print("\"timedata\":\"");
+      client.print(timeNow.year(), DEC);
+      client.print('\/');
+      client.print(timeNow.month(), DEC);
+      client.print('\/');
+      client.print(timeNow.day(), DEC);
+      client.print(' ');
+      client.print(timeNow.hour(), DEC);
+      client.print(':');
+      client.print(timeNow.minute(), DEC);
+      client.print(':');
+      client.print(timeNow.second(), DEC);
+      client.println("\",");
+      //temperature
+      client.print("\"temperature\":\"");
+      client.print(temp);
+      client.println("\",");
+      //humidity
+      client.print("\"humidity\":\"");
+      client.print(hum);
+      //close
+      client.println("\"}");   
+    }
+
 
     // is "relay" command?
     if (command == "relay") {
-
+      Serial.println("responding relay");
       int stat = client.parseInt();
 
       if (stat == 1) {
@@ -64,7 +99,7 @@ void readClients(){
   }
 }
 
-// read DHT22 sensor, can be rad every 2 seconds
+// read DHT22 sensor, can be read every 2 seconds
 void readDHT(){
   hum = dht.readHumidity();
   temp= dht.readTemperature();
@@ -82,34 +117,24 @@ void setup() {
   Wire.begin();
   
   pinMode(relay_1,OUTPUT);
-
+  digitalWrite(relay_1, HIGH);
+  
   dht.begin();
 
   Bridge.begin();// Bridge startup
   // Listen for incoming connection only from localhost
   // (no one from the external network could connect)
-  server.listenOnLocalhost();
+  //server.listenOnLocalhost();
   server.begin();
 }
 
 void loop() {
   timeNow = RTClib::now();
-  Serial.print(timeNow.year(), DEC);
-  Serial.print('/');
-  Serial.print(timeNow.month(), DEC);
-  Serial.print('/');
-  Serial.print(timeNow.day(), DEC);
-  Serial.print(' ');
-  Serial.print(timeNow.hour(), DEC);
-  Serial.print(':');
-  Serial.print(timeNow.minute(), DEC);
-  Serial.print(':');
-  Serial.print(timeNow.second(), DEC);
-  Serial.println();
+ 
 
   readClients();
 
-  if (timeNow.unixtime() - timeDHT.unixtime() >= 2) readDHT();
+  //if (timeNow.unixtime() - timeDHT.unixtime() >= 2) readDHT();
   delay(50); // Poll every 50ms
 }
 

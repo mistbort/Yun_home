@@ -20,15 +20,19 @@ html {
 body {
   height: 100%;
   margin: 20px;    
+  
 }
 h2 {
- color:white
+ color: #f0f0f0;
+ font-size: 60px;
 }
 p {
-  color:white;
+  color:#f0f0f0;
+  font-size: 40px;
 }
 label{
-  color:white;
+  color:#f0f0f0;
+  font-size: 40px;
 }
 .section {
   margin-bottom: 30px;
@@ -48,7 +52,7 @@ input {
 }
 .switch-control {
   width: 70px;  
-  height: 30px;
+  height: 40px;
   cursor: pointer;
   display: inline-block;
   position: relative;
@@ -62,7 +66,7 @@ input {
 .switch-control:after {
   left: 0;
   width: 20px;
-  height: 20px;
+  height: 30px;
   margin: 5px;
   content: '';
   position: absolute;
@@ -82,9 +86,10 @@ input:checked + .switch-control:after {
 
 <body>
   <div class="section" id="sensor-data">
-    <h2>Weather Data</h2>
-    <p>Temperature: <span id="temperature">22°C</span></p>
-    <p>Humidity: <span id="humidity">60%</span></p>
+    <h2 color >Home Data</h2>
+    <p>Time: <span id="timedate"></span></p>
+    <p>Temperature: <span id="temperature">°C</span></p>
+    <p>Humidity: <span id="humidity">%</span></p>
   </div>
   <div class="section" id="switches">    	
     <h2>Controls</h2>
@@ -92,32 +97,51 @@ input:checked + .switch-control:after {
       <label for="switch1">Audio:</label>
       <input type="checkbox" id="switch1" />
       <label class="switch-control" for="switch1"></label>
-      <script type="text/javascript">
-
-        $(document).ready(function() {
-  
-          $('#switch1').click(function() {                
-            if ($(this).is(':checked')) {
-              //ON
-              relayOn();
-            } else {
-              //OFF
-              relayOff();
-            }
-          });
-        });
-  
-        function relayOn() {      
-          //send 1 to arduino
-          $.get('/arduino/relay/1', function() {});
-        }
-  
-        function relayOff() {      
-          //send 0 to arduino
-          $.get('/arduino/relay/0', function() {});
-        }
-      </script>
     </div>
-    
   </div>
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+      $('#switch1').click(function() {                
+        if ($(this).is(':checked')) {
+          //ON
+          relayOn();
+        } else {
+          //OFF
+          relayOff();
+        }
+      });
+    });
+
+    function relayOn() {      
+      //send 1 to arduino
+      $.get('/arduino/relay/1', function() {});
+    }
+
+    function relayOff() {      
+      //send 0 to arduino
+      $.get('/arduino/relay/0', function() {});
+    }
+
+    function setVal(selector, value) {	
+			$(selector).text(value);
+		}
+
+    function refresh() {
+      $.get('/arduino/data/0', function(json_response){
+            //console.log(json_response);			 
+            time = json_response["timedata"];		
+            setVal("#timedate", time);		
+            temp = json_response["temperature"];
+            setVal("#temperature", temp + " °C");		
+            humi = json_response["humidity"];		
+            setVal("#humidity", humi + " %");		
+            
+          }
+        );	  	
+    }	
+    window.setInterval(refresh, 2000);
+  </script>
 </body>
