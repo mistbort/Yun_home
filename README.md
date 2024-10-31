@@ -22,31 +22,18 @@ https://github.com/mat-lo/yun-examples
 
 adafruit/DHT-sensor-library
 https://github.com/adafruit/DHT-sensor-library
+
+
+
 ## project scheme
 
 4 switch
-  1-ciabatta con collegati casse audio e controller bluetooth audio
-    +switch per l'accensione della ciabatta audio da pagina html
+  1-audio setup
   2-
   3-
   4-
-sensore DHT21 umidità e temperatura
-  lettura umidità
-    +visione umidità da pagina html
-  lettura temperatura
-    +visione temperatura da pagina html
-modulo HTC orologio
-    +visione orario da pagina html
-  -allarme_1
-  -allarme_1
+DHT21 sensor (temperature, humidity)
+HTC module (time)
+  -allarm_1
+  -allarm_2
 
-
-  To do:
-  - HTML
-cambiare layout
-aggiungere pulsante switch per ciabatta audio
-aggiungere sezione lettura dati sensori e orario
-
-  - scketch
-aggiornare dati della pagina html
-funzione che aggiorna la timedate da internet, al premere di un pulsante dalla pagina html 

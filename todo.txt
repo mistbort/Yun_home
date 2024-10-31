@@ -1,0 +1,15 @@
+4 switch
+  1-audio setup
+  2-
+  3-
+  4-
+DHT21 sensor (temperature, humidity)
+HTC module (time)
+  -allarm_1
+  -allarm_2
+
+  To do:
+  - HTML
+pulsante per aggiornare time e data da internet con bridge
+  - scketch
+funzione che aggiorna la timedate da internet, al premere di un pulsante dalla pagina html 
