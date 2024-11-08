@@ -7,8 +7,8 @@
 #include <Wire.h>
 #include <DS3231.h>
 #include <Bridge.h>
-#include <YunServer.h>
-#include <YunClient.h>
+#include <BridgeServer.h>
+#include <BridgeCLient.h>
 #include <DHT.h>
 
 /*VARIABILI*/
@@ -22,7 +22,7 @@ const uint8_t relay_4 = 2; //relay 4
 #define DHTTYPE DHT22   //sensor type (DHT22)
 
 //inizializations
-YunServer server;
+BridgeServer server;
 DHT dht(DHTPIN, DHTTYPE); //dht humidity sensor object
 DS3231 myRTC; //Declare a DS3231 object
 
@@ -43,7 +43,7 @@ float temp; //temperature
 //read clients from server and set actions
 void readClients(){
   // Get clients coming from server
-  YunClient client = server.accept();
+  BridgeClient client = server.accept();
 
   // There is a new client?
   if (client) {
@@ -61,9 +61,9 @@ void readClients(){
       //timedata
       client.print("\"timedata\":\"");
       client.print(timeNow.year(), DEC);
-      client.print('\/');
+      client.print("-");
       client.print(timeNow.month(), DEC);
-      client.print('\/');
+      client.print("-");
       client.print(timeNow.day(), DEC);
       client.print(' ');
       client.print(timeNow.hour(), DEC);
