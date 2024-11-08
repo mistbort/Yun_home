@@ -14,8 +14,11 @@
 /*VARIABILI*/
 
 //Costanti
-const uint8_t relay_1 = 12; //relay 1
-#define DHTPIN 8   //DHT humidity sensor pin
+const uint8_t relay_1 = 8; //relay 1
+const uint8_t relay_2 = 7; //relay 2
+const uint8_t relay_3 = 4; //relay 3
+const uint8_t relay_4 = 2; //relay 4
+#define DHTPIN 12   //DHT humidity sensor pin
 #define DHTTYPE DHT22   //sensor type (DHT22)
 
 //inizializations
